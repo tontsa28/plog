@@ -1,20 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>plog</title>
-</head>
-<body>
-    <h1>Hello plog!</h1>
-    <p>
-        This is the root page of the service!
-    </p>
-    <form action="/register" method="get">
-        <input type="submit" value="Siirry rekisteröitymissivulle" />
-    </form>
-    <form action="/login" method="get">
-        <input type="submit" value="Siirry kirjautumissivulle" />
-    </form>
-</body>
-</html>
+{% extends "layout.html" %}
+
+{% block title %}plog{% endblock %}
+
+{% block content %}
+<h2>Aircraft</h2>
+<p>
+    This is the root page of the service!
+</p>
+<form action="/register" method="get">
+    <input type="submit" value="Siirry rekisteröitymissivulle" />
+</form>
+<form action="/login" method="get">
+    <input type="submit" value="Siirry kirjautumissivulle" />
+</form>
+{% endblock %}

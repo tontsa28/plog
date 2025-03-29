@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <h1>plog</h1>
+
+    {% if session.user_id %}
+    <p>
+        Logged in as <a href="/user/{{ session.user_id }}">{{ session.username }}</a>
+    </p>
+    {% endif %}
+
+    <p>
+        <a href="/">Front page</a> |
+        <a href="/login">Log in</a> |
+        <a href="/register">Register</a>
+    </p>
+
+    {% for message in get_flashed_messages() %}
+    <div class="info">
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>

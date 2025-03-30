@@ -1,13 +1,23 @@
 import secrets
 import sqlite3
 
-from flask import Flask, flash, redirect, render_template, request, session
+from flask import Flask, flash, redirect, render_template, request, session, abort
 
 import config
 import users
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
+
+def require_login() -> None:
+    if "user_id" not in session:
+        abort(403)
+
+def check_csrf() -> None:
+    if "csrf_token" not in request.form:
+        abort(403)
+    if request.form["csrf_token"] != session["csrf_token"]:
+        abort(403)
 
 @app.route("/")
 def index() -> str:
@@ -51,3 +61,10 @@ def register():
         return redirect("/")
     else:
         return render_template("register.html")
+
+@app.route("/logout")
+def logout():
+    if "user_id" in session:
+        del session["user_id"]
+        del session["username"]
+    return redirect("/")

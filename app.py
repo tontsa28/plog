@@ -1,13 +1,35 @@
 import secrets
 import sqlite3
+import importlib
 
 from flask import Flask, flash, redirect, render_template, request, session, abort
 
-import config
 import users
 
 app = Flask(__name__)
-app.secret_key = config.secret_key
+
+# Import the secret key and if it's invalid or not present, create it automatically
+try:
+    import config
+    if len(config.secret_key) < 128:
+        raise AttributeError
+    app.secret_key = config.secret_key
+except ModuleNotFoundError:
+    with open("config.py", "w", encoding="UTF-8") as file:
+        file.write(f"secret_key = '{secrets.token_hex(64)}'")
+
+    import config
+    app.secret_key = config.secret_key
+except AttributeError:
+    import os
+    os.remove("config.py")
+
+    with open("config.py", "w", encoding="UTF-8") as file:
+        file.write(f"secret_key = '{secrets.token_hex(64)}'")
+
+    import config
+    importlib.reload(config)
+    app.secret_key = config.secret_key
 
 def require_login() -> None:
     if "user_id" not in session:

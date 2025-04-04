@@ -15,6 +15,7 @@
     <p>
         <a href="/">Front page</a> |
     {% if session.user_id %}
+        <a href="/new_item">Add an aircraft</a> |
         <a href="/logout">Log out</a>
     {% else %}
         <a href="/login">Log in</a> |

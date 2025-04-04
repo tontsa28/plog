@@ -3,8 +3,10 @@ import sqlite3
 import importlib
 
 from flask import Flask, flash, redirect, render_template, request, session, abort
+from werkzeug.wrappers.response import Response
 
 import users
+import items
 
 app = Flask(__name__)
 
@@ -43,10 +45,11 @@ def check_csrf() -> None:
 
 @app.route("/")
 def index() -> str:
-    return render_template("index.html")
+    all_items = items.get_items()
+    return render_template("index.html", items=all_items)
 
 @app.route("/login", methods=["GET", "POST"])
-def login():
+def login() -> Response | str:
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
@@ -64,7 +67,7 @@ def login():
         return render_template("login.html")
 
 @app.route("/register", methods=["GET", "POST"])
-def register():
+def register() -> Response | str:
     if request.method == "POST":
         username = request.form["username"]
         password1 = request.form["password1"]
@@ -85,8 +88,46 @@ def register():
         return render_template("register.html")
 
 @app.route("/logout")
-def logout():
+def logout() -> Response:
     if "user_id" in session:
         del session["user_id"]
         del session["username"]
     return redirect("/")
+
+@app.route("/new_item", methods=["GET", "POST"])
+def new_item() -> Response | str:
+    if request.method == "POST":
+        require_login()
+        check_csrf()
+
+        manufacturer = request.form["manufacturer"]
+        if not manufacturer or len(manufacturer) > 30:
+            abort(403)
+        model = request.form["model"]
+        if not model or len(model) > 20:
+            abort(403)
+        registration = request.form["registration"]
+        if not registration or len(registration) > 10:
+            abort(403)
+        category = request.form["category"]
+        if not category or len(category) > 20:
+            abort(403)
+        airline = request.form["airline"]
+        if not airline or len(airline) > 30:
+            abort(403)
+        try:
+            times_onboard = int(request.form["times_onboard"])
+        except ValueError:
+            times_onboard = 0
+        try:
+            times_seen = int(request.form["times_seen"])
+        except ValueError:
+            times_seen = 0
+        user_id = session["user_id"]
+
+        items.add_item(user_id, manufacturer, model, registration, category, airline, times_onboard, times_seen)
+
+        return redirect("/")
+    else:
+        require_login()
+        return render_template("new_item.html")

@@ -96,8 +96,9 @@ def logout() -> Response:
 
 @app.route("/new_item", methods=["GET", "POST"])
 def new_item() -> Response | str:
+    require_login()
+
     if request.method == "POST":
-        require_login()
         check_csrf()
 
         manufacturer = request.form["manufacturer"]
@@ -129,7 +130,6 @@ def new_item() -> Response | str:
 
         return redirect("/")
     else:
-        require_login()
         return render_template("new_item.html")
 
 @app.route("/item/<int:item_id>")
@@ -149,7 +149,7 @@ def remove_item(item_id: int):
         abort(404)
     if item["user_id"] != session["user_id"]:
         abort(403)
-    
+
     if request.method == "POST":
         check_csrf()
         if "remove" in request.form:
@@ -159,3 +159,53 @@ def remove_item(item_id: int):
             return redirect(f"/item/{item_id}")
     else:
         return render_template("remove_item.html", item=item)
+
+@app.route("/item/<int:item_id>/edit", methods=["GET", "POST"])
+def edit_item(item_id: int):
+    require_login()
+
+    if request.method == "POST":
+        check_csrf()
+
+        item_id = int(request.form["item_id"])
+        item = items.get_item(item_id)
+        if not item:
+            abort(404)
+        if item["user_id"] != session["user_id"]:
+            abort(403)
+
+        manufacturer = request.form["manufacturer"]
+        if not manufacturer or len(manufacturer) > 30:
+            abort(403)
+        model = request.form["model"]
+        if not model or len(model) > 20:
+            abort(403)
+        registration = request.form["registration"]
+        if not registration or len(registration) > 10:
+            abort(403)
+        category = request.form["category"]
+        if not category or len(category) > 20:
+            abort(403)
+        airline = request.form["airline"]
+        if not airline or len(airline) > 30:
+            abort(403)
+        try:
+            times_onboard = int(request.form["times_onboard"])
+        except ValueError:
+            times_onboard = 0
+        try:
+            times_seen = int(request.form["times_seen"])
+        except ValueError:
+            times_seen = 0
+
+        items.update_item(item_id, manufacturer, model, registration, category, airline, times_onboard, times_seen)
+
+        return redirect(f"/item/{item_id}")
+    else:
+        item = items.get_item(item_id)
+        if not item:
+            abort(404)
+        if item["user_id"] != session["user_id"]:
+            abort(403)
+
+        return render_template("edit_item.html", item=item)

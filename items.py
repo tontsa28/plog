@@ -16,3 +16,7 @@ def get_items() -> list:
 def get_item(item_id: int) -> list | None:
     sql = "SELECT A.id, A.airline, A.manufacturer, A.model, A.registration, A.user_id, U.username FROM aircraft A LEFT JOIN users U ON A.user_id = U.id WHERE A.id = ?"
     return db.query_one(sql, [item_id])
+
+def update_item(item_id: int, manufacturer: str, model: str, registration: str, category: str, airline: str, times_onboard: int, times_seen: int) -> None:
+    sql = "UPDATE aircraft SET manufacturer = ?, model = ?, registration = ?, category = ?, airline = ?, times_onboard = ?, times_seen = ? WHERE id = ?"
+    db.execute(sql, [manufacturer, model, registration, category, airline, times_onboard, times_seen, item_id])

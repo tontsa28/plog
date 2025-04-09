@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}Edit aircraft{% endblock %}
+
+{% block content %}
+<h2>{{ item.airline}} {{ item.manufacturer }} {{ item.model }} [{{ item.registration }}]</h2>
+<h3>Edit aircraft</h3>
+<form action="/item/{{ item.id }}/edit" method="post">
+    <p>
+        <label for="manufacturer">Manufacturer:</label> <br/>
+        <input type="text" name="manufacturer" id="manufacturer" maxlength="30" required />
+    </p>
+    <p>
+        <label for="model">Model:</label> <br/>
+        <input type="text" name="model" id="model" maxlength="20" required />
+    </p>
+    <p>
+        <label for="registration">Registration:</label> <br/>
+        <input type="text" name="registration" id="registration" maxlength="10" required />
+    </p>
+    <p>
+        <label for="category">Category:</label> <br/>
+        <input type="text" name="category" id="category" maxlength="20" required />
+    </p>
+    <p>
+        <label for="airline">Airline:</label> <br/>
+        <input type="text" name="airline" id="airline" maxlength="30" required />
+    </p>
+    <p>
+        <label for="times_onboard">Times onboard:</label> <br/>
+        <input type="number" name="times_onboard" id="times_onboard" min="0" max="999" />
+    </p>
+    <p>
+        <label for="times_seen">Times seen:</label> <br/>
+        <input type="number" name="times_seen" id="times_seen" min="0" max="999" />
+    </p>
+    <input type="hidden" name="item_id" value="{{ item.id }}" />
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    <input type="submit" value="Edit aircraft" />
+</form>
+<p>
+    <a href="/item/{{ item.id }}">Cancel</a>
+</p>
+{% endblock %}

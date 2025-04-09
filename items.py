@@ -9,6 +9,10 @@ def remove_item(item_id: int) -> None:
     sql = "DELETE FROM aircraft WHERE id = ?"
     db.execute(sql, [item_id])
 
-def get_items():
-    sql = "SELECT * FROM aircraft"
+def get_items() -> list:
+    sql = "SELECT A.id, A.airline, A.manufacturer, A.model, A.registration, U.username FROM aircraft A LEFT JOIN users U ON A.user_id = U.id"
     return db.query(sql)
+
+def get_item(item_id: int) -> list | None:
+    sql = "SELECT A.id, A.airline, A.manufacturer, A.model, A.registration, A.user_id, U.username FROM aircraft A LEFT JOIN users U ON A.user_id = U.id WHERE A.id = ?"
+    return db.query_one(sql, [item_id])

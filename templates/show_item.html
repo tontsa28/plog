@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ item.airline}} {{ item.manufacturer }} {{ item.model }} [{{ item.registration }}]{% endblock %}
+
+{% block content %}
+<h2>{{ item.airline}} {{ item.manufacturer }} {{ item.model }} [{{ item.registration }}]</h2>
+{% if session.user_id == item.user_id %}
+<p>
+    <a href="/edit_item/{{ item.id }}">Edit</a>
+    <a href="/item/{{ item.id }}/remove">Delete</a>
+</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}Aircraft deletion{% endblock %}
+
+{% block content %}
+<h2>{{ item.airline}} {{ item.manufacturer }} {{ item.model }} [{{ item.registration }}]</h2>
+<h3>Are you sure you want to permanently delete this aircraft?</h3>
+<form action="/item/{{ item.id }}/remove" method="post">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    <input type="submit" name="remove" value="Delete aircraft">
+    <input type="submit" name="cancel" value="Cancel">
+</form>
+{% endblock %}

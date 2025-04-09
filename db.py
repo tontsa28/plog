@@ -20,3 +20,9 @@ def query(sql: str, params=[]) -> list:
     result = conn.execute(sql, params).fetchall()
     conn.close()
     return result
+
+def query_one(sql: str, params=[]) -> list:
+    conn = get_connection()
+    result = conn.execute(sql, params).fetchone()
+    conn.close()
+    return result

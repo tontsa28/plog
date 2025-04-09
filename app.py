@@ -131,3 +131,31 @@ def new_item() -> Response | str:
     else:
         require_login()
         return render_template("new_item.html")
+
+@app.route("/item/<int:item_id>")
+def show_item(item_id: int):
+    item = items.get_item(item_id)
+    if not item:
+        abort(404)
+    
+    return render_template("show_item.html", item=item)
+
+@app.route("/item/<int:item_id>/remove", methods=["GET", "POST"])
+def remove_item(item_id: int):
+    require_login()
+
+    item = items.get_item(item_id)
+    if not item:
+        abort(404)
+    if item["user_id"] != session["user_id"]:
+        abort(403)
+    
+    if request.method == "POST":
+        check_csrf()
+        if "remove" in request.form:
+            items.remove_item(item_id)
+            return redirect("/")
+        else:
+            return redirect(f"/item/{item_id}")
+    else:
+        return render_template("remove_item.html", item=item)

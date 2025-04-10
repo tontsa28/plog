@@ -10,7 +10,7 @@
 
 #### App features:
 - The user is able to create an account, log in and log out. ✅
-- The user can add, modify and remove their own content. 🚧
+- The user can add, modify and remove their own content. ✅
 - The user can sort, filter and search the aircraft in various ways (type, age, size etc.). ❌
 - The user can see statistics about their use of the app. ❌
 - The user can see the content they and others have added. ❌

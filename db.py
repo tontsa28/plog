@@ -4,7 +4,7 @@ from flask import g
 
 def connect() -> Connection:
     conn = sqlite3.connect("database.db")
-    conn.execute("PRAGMA foreign_keys = ON;")
+    conn.execute("PRAGMA foreign_keys = ON")
     conn.row_factory = sqlite3.Row
 
     return conn
@@ -20,22 +20,22 @@ def execute(sql: str, params: list | None = None) -> None:
     g.last_insert_id = result.lastrowid
     conn.close()
 
-def query(sql: str, params: list | None = None) -> list:
+def query(sql: str, params: list | None = None) -> list[dict]:
     conn = connect()
     if params is None:
         params = []
 
-    result = conn.execute(sql, params).fetchall()
+    result = conn.cursor().execute(sql, params).fetchall()
     conn.close()
 
-    return result
+    return [dict(res) for res in result]
 
-def query_one(sql: str, params: list | None = None) -> list:
+def query_one(sql: str, params: list | None = None) -> dict:
     conn = connect()
     if params is None:
         params = []
 
-    result = conn.execute(sql, params).fetchone()
+    result = conn.cursor().execute(sql, params).fetchone()
     conn.close()
 
-    return result
+    return dict(result)

@@ -2,7 +2,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 import db
 
-def get_user(user_id: int) -> list:
+def get_user(user_id: int) -> dict:
     sql = "SELECT id, username FROM users WHERE id = ?"
     return db.query_one(sql, [user_id])
 

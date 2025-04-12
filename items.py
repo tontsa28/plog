@@ -11,7 +11,7 @@ def add_item(
     times_seen: int = 0
 ) -> None:
     sql = """INSERT INTO aircraft (manufacturer, model, registration, category, airline, times_onboard, times_seen, user_id)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?)"""
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)"""
     db.execute(sql, [manufacturer, model, registration, category, airline, times_onboard, times_seen, user_id])
 
 def remove_item(item_id: int) -> None:
@@ -30,7 +30,7 @@ def get_items() -> list:
             WHERE A.user_id = U.id"""
     return db.query(sql)
 
-def get_item(item_id: int) -> list:
+def get_item(item_id: int) -> dict:
     sql = """SELECT A.id,
                     A.manufacturer,
                     A.model,

@@ -16,3 +16,24 @@
 - The user can see statistics about their app usage as well as the content they have added on the profile page. ❌
 - The user can see the content they and others have added. ❌
 - The user has the option to follow other users' aircraft lists. ❌
+
+## Install & run
+Install the flask library:
+```
+$ pip install flask
+```
+
+Create the database tables:
+```
+$ sqlite3 database.db < schema.sql
+```
+
+Insert predefined data into the database:
+```
+$ sqlite3 database.db < init.sql
+```
+
+Run the app:
+```
+$ flask run
+```

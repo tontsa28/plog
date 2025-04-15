@@ -130,7 +130,8 @@ def new_item() -> Response | str:
 
         return redirect("/")
     else:
-        return render_template("new_item.html")
+        manufacturers = items.get_all_manufacturers()
+        return render_template("new_item.html", manufacturers=manufacturers)
 
 @app.route("/item/<int:item_id>")
 def show_item(item_id: int):

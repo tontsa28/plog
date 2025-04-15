@@ -5,9 +5,18 @@
 {% block content %}
 <h2>New aircraft</h2>
 <form action="/new_item" method="post">
-    <p>
+    <!-- <p>
         <label for="manufacturer">Manufacturer:</label> <br/>
         <input type="text" name="manufacturer" id="manufacturer" maxlength="30" required />
+    </p> -->
+    <p>
+        <label for="manufacturer">Manufacturer:</label> <br />
+        <select name="manufacturer" id="manufacturer">
+            <option value="">(Choose)</option>
+        {% for manufacturer in manufacturers %}
+            <option value="{{ manufacturer.name }}">{{ manufacturer.name }}</option>
+        {% endfor %}
+        </select>
     </p>
     <p>
         <label for="model">Model:</label> <br/>

@@ -65,3 +65,7 @@ def update_item(
                 times_seen = ?
             WHERE id = ?"""
     db.execute(sql, [manufacturer, model, registration, category, airline, times_onboard, times_seen, item_id])
+
+def get_all_manufacturers() -> list[dict]:
+    sql = "SELECT name FROM manufacturers"
+    return db.query(sql)

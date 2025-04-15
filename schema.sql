@@ -21,3 +21,14 @@ CREATE TABLE images (
     aircraft_id INTEGER REFERENCES aircraft,
     image BLOB
 );
+
+CREATE TABLE manufacturers (
+    id INTEGER PRIMARY KEY,
+    name TEXT
+);
+
+CREATE TABLE aircraft_manufacturers (
+    id INTEGER PRIMARY KEY,
+    aircraft_id INTEGER REFERENCES aircraft,
+    manufacturer_id INTEGER REFERENCES manufacturers
+);

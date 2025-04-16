@@ -69,3 +69,7 @@ def update_item(
 def get_all_manufacturers() -> list[dict]:
     sql = "SELECT name FROM manufacturers"
     return db.query(sql)
+
+def get_all_categories() -> list[dict]:
+    sql = "SELECT name FROM categories"
+    return db.query(sql)

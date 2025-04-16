@@ -32,3 +32,14 @@ CREATE TABLE aircraft_manufacturers (
     aircraft_id INTEGER REFERENCES aircraft,
     manufacturer_id INTEGER REFERENCES manufacturers
 );
+
+CREATE TABLE categories (
+    id INTEGER PRIMARY KEY,
+    name TEXT
+);
+
+CREATE TABLE aircraft_categories (
+    id INTEGER PRIMARY KEY,
+    aircraft_id INTEGER REFERENCES aircraft,
+    manufacturer_id INTEGER REFERENCES categories
+);

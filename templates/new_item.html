@@ -5,14 +5,10 @@
 {% block content %}
 <h2>New aircraft</h2>
 <form action="/new_item" method="post">
-    <!-- <p>
-        <label for="manufacturer">Manufacturer:</label> <br/>
-        <input type="text" name="manufacturer" id="manufacturer" maxlength="30" required />
-    </p> -->
     <p>
-        <label for="manufacturer">Manufacturer:</label> <br />
-        <select name="manufacturer" id="manufacturer">
-            <option value="">(Choose)</option>
+        <label for="manufacturer">Manufacturer:</label> <br/>
+        <select name="manufacturer" id="manufacturer" required>
+            <option value="" disabled selected>(Choose)</option>
         {% for manufacturer in manufacturers %}
             <option value="{{ manufacturer.name }}">{{ manufacturer.name }}</option>
         {% endfor %}
@@ -28,7 +24,12 @@
     </p>
     <p>
         <label for="category">Category:</label> <br/>
-        <input type="text" name="category" id="category" maxlength="20" required />
+        <select name="category" id="category" required>
+            <option value="" disabled selected>(Choose)</option>
+        {% for category in categories %}
+            <option value="{{ category.name }}">{{ category.name }}</option>
+        {% endfor %}
+        </select>
     </p>
     <p>
         <label for="airline">Airline:</label> <br/>

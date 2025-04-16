@@ -13,3 +13,11 @@ INSERT INTO manufacturers (name) VALUES ("Northrop Grumman");
 INSERT INTO manufacturers (name) VALUES ("Pilatus");
 INSERT INTO manufacturers (name) VALUES ("Cirrus");
 INSERT INTO manufacturers (name) VALUES ("Comac");
+INSERT INTO manufacturers (name) VALUES ("Other");
+
+INSERT INTO categories (name) VALUES ("Passenger");
+INSERT INTO categories (name) VALUES ("Cargo");
+INSERT INTO categories (name) VALUES ("Military or government");
+INSERT INTO categories (name) VALUES ("Business jets");
+INSERT INTO categories (name) VALUES ("General aviation");
+INSERT INTO categories (name) VALUES ("Other");

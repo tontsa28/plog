@@ -131,7 +131,8 @@ def new_item() -> Response | str:
         return redirect("/")
     else:
         manufacturers = items.get_all_manufacturers()
-        return render_template("new_item.html", manufacturers=manufacturers)
+        categories = items.get_all_categories()
+        return render_template("new_item.html", manufacturers=manufacturers, categories=categories)
 
 @app.route("/item/<int:item_id>")
 def show_item(item_id: int):
@@ -209,4 +210,7 @@ def edit_item(item_id: int):
         if item["user_id"] != session["user_id"]:
             abort(403)
 
-        return render_template("edit_item.html", item=item)
+        manufacturers = items.get_all_manufacturers()
+        categories = items.get_all_categories()
+
+        return render_template("edit_item.html", item=item, manufacturers=manufacturers, categories=categories)

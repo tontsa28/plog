@@ -8,7 +8,14 @@
 <form action="/item/{{ item.id }}/edit" method="post">
     <p>
         <label for="manufacturer">Manufacturer:</label> <br/>
-        <input type="text" name="manufacturer" id="manufacturer" value="{{ item.manufacturer }}" maxlength="30" required />
+        <select name="manufacturer" id="manufacturer" required>
+            <option value="{{ item.manufacturer }}" selected>{{ item.manufacturer }}</option>
+        {% for manufacturer in manufacturers %}
+            {% if manufacturer.name != item.manufacturer %}
+            <option value="{{ manufacturer.name }}">{{ manufacturer.name }}</option>
+            {% endif %}
+        {% endfor %}
+        </select>
     </p>
     <p>
         <label for="model">Model:</label> <br/>
@@ -20,7 +27,14 @@
     </p>
     <p>
         <label for="category">Category:</label> <br/>
-        <input type="text" name="category" id="category" value="{{ item.category }}" maxlength="20" required />
+        <select name="category" id="category" required>
+            <option value="{{ item.category }}" selected>{{ item.category }}</option>
+        {% for category in categories %}
+            {% if category.name != item.category %}
+            <option value="{{ category.name }}">{{ category.name }}</option>
+            {% endif %}
+        {% endfor %}
+        </select>
     </p>
     <p>
         <label for="airline">Airline:</label> <br/>

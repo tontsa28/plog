@@ -1,9 +1,18 @@
 {% extends "layout.html" %}
 
-{% block title %}{{ item.airline}} {{ item.manufacturer }} {{ item.model }} [{{ item.registration }}]{% endblock %}
+{% block title %}{{ item.airline }} {{ item.manufacturer }} {{ item.model }} [{{ item.registration }}]{% endblock %}
 
 {% block content %}
 <h2>{{ item.airline}} {{ item.manufacturer }} {{ item.model }} [{{ item.registration }}]</h2>
+<p>
+    <b>Manufacturer: </b>{{ item.manufacturer }} <br/>
+    <b>Model: </b>{{ item.model }} <br/>
+    <b>Registration: </b>{{ item.registration }} <br/>
+    <b>Category: </b>{{ item.category }} <br/>
+    <b>Airline: </b>{{ item.airline }} <br/>
+    <b>Times onboard: </b>{{ item.times_onboard }} <br/>
+    <b>Times seen: </b>{{ item.times_seen }} <br/>
+</p>
 {% if session.user_id == item.user_id %}
 <p>
     <a href="/item/{{ item.id }}/edit">Edit</a>

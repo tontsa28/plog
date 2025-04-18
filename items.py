@@ -73,3 +73,20 @@ def get_all_manufacturers() -> list[dict]:
 def get_all_categories() -> list[dict]:
     sql = "SELECT name FROM categories"
     return db.query(sql)
+
+def search_items(query: str) -> list[dict]:
+    sql = """SELECT A.id,
+                    A.manufacturer,
+                    A.model,
+                    A.registration,
+                    A.airline,
+                    A.user_id,
+                    U.username
+            FROM aircraft A, users U
+            WHERE A.user_id = U.id
+            AND (A.manufacturer LIKE ?
+            OR A.model LIKE ?
+            OR A.registration LIKE ?
+            OR A.airline LIKE ?)"""
+    like = "%" + query + "%"
+    return db.query(sql, [like, like, like, like])

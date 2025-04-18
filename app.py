@@ -135,7 +135,7 @@ def new_item() -> Response | str:
         return render_template("new_item.html", manufacturers=manufacturers, categories=categories)
 
 @app.route("/item/<int:item_id>")
-def show_item(item_id: int):
+def show_item(item_id: int) -> str:
     item = items.get_item(item_id)
     if not item:
         abort(404)
@@ -143,7 +143,7 @@ def show_item(item_id: int):
     return render_template("show_item.html", item=item)
 
 @app.route("/item/<int:item_id>/remove", methods=["GET", "POST"])
-def remove_item(item_id: int):
+def remove_item(item_id: int) -> Response | str:
     require_login()
 
     item = items.get_item(item_id)
@@ -163,7 +163,7 @@ def remove_item(item_id: int):
         return render_template("remove_item.html", item=item)
 
 @app.route("/item/<int:item_id>/edit", methods=["GET", "POST"])
-def edit_item(item_id: int):
+def edit_item(item_id: int) -> Response | str:
     require_login()
 
     if request.method == "POST":
@@ -214,3 +214,13 @@ def edit_item(item_id: int):
         categories = items.get_all_categories()
 
         return render_template("edit_item.html", item=item, manufacturers=manufacturers, categories=categories)
+
+@app.route("/search")
+def search_item() -> str:
+    query = request.args.get("query")
+    if query:
+        results = items.search_items(query)
+    else:
+        query = ""
+        results = []
+    return render_template("search_item.html", query=query, results=results)

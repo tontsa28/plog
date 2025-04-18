@@ -12,9 +12,8 @@
 - The user is able to create an account, log in and log out. ✅
 - The user can add, modify and remove their own content. ✅
 - The user can see user-added data in the app. ✅
-- The user can sort, filter and search the aircraft in various ways (type, age, size etc.). ❌
+- The user can sort, filter and search the aircraft in various ways (type, size etc.). 🚧
 - The user can see statistics about their app usage as well as the content they have added on the profile page. ❌
-- The user can see the content they and others have added. ❌
 - The user has the option to follow other users' aircraft lists. ❌
 
 ## Install & run

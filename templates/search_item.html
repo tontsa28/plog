@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}Search aircraft{% endblock %}
+
+{% block content %}
+<h2>Search aircraft</h2>
+
+<form action="/search" method="get">
+    <p>
+        <label for="query">Keyword:</label>
+        <input type="text" name="query" id="query" value="{{ query }}">
+    </p>
+    <input type="submit" value="Search">
+</form>
+
+{% if query %}
+<h3>Results</h3>
+
+<ul>
+    {% for item in results %}
+    <li>
+        <a href="/item/{{ item.id }}">{{ item.airline}} {{ item.manufacturer }} {{ item.model }} [{{ item.registration }}]</a> <br/>
+        User: <a href="/user/{{ item.user_id }}">{{ item.username }}</a> <br/>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

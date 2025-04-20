@@ -6,6 +6,16 @@ def get_user(user_id: int) -> dict:
     sql = "SELECT id, username FROM users WHERE id = ?"
     return db.query_one(sql, [user_id])
 
+def get_items(user_id: int) -> list[dict]:
+    sql = """SELECT id,
+                    manufacturer,
+                    model,
+                    registration,
+                    airline
+            FROM aircraft
+            WHERE user_id = ?"""
+    return db.query(sql, [user_id])
+
 def register_user(username: str, password: str) -> None:
     password = generate_password_hash(password)
     sql = "INSERT INTO users (username, password) VALUES (?, ?)"

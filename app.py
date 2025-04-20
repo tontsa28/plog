@@ -224,3 +224,11 @@ def search_item() -> str:
         query = ""
         results = []
     return render_template("search_item.html", query=query, results=results)
+
+@app.route("/user/<int:user_id>")
+def show_user(user_id) -> str:
+    user = users.get_user(user_id)
+    if not user:
+        abort(404)
+    user_items = users.get_items(user_id)
+    return render_template("show_user.html", user=user, items=user_items)

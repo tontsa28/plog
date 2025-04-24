@@ -13,8 +13,8 @@
 - The user can add, modify and remove their own content. ✅
 - The user can see user-added data in the app. ✅
 - The user can sort, filter and search the aircraft in various ways (type, size etc.). 🚧
-- The user can see statistics about their app usage as well as the content they have added on the profile page. ❌
-- The user has the option to follow other users' aircraft lists. ❌
+- The user can see statistics about their app usage as well as the content they have added on the profile page. 🚧
+- The user has the option to like other users' submissions. 🚧
 
 ## Install & run
 Install the flask library:

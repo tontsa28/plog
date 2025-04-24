@@ -46,7 +46,9 @@ def check_csrf() -> None:
 @app.route("/")
 def index() -> str:
     all_items = items.get_items()
-    return render_template("index.html", items=all_items)
+    all_likes = items.get_all_likes()
+    print(all_likes)
+    return render_template("index.html", items=all_items, likes=all_likes)
 
 @app.route("/login", methods=["GET", "POST"])
 def login() -> Response | str:
@@ -139,8 +141,9 @@ def show_item(item_id: int) -> str:
     item = items.get_item(item_id)
     if not item:
         abort(404)
-    
-    return render_template("show_item.html", item=item)
+    likes = items.get_likes(item_id)
+
+    return render_template("show_item.html", item=item, likes=likes)
 
 @app.route("/item/<int:item_id>/remove", methods=["GET", "POST"])
 def remove_item(item_id: int) -> Response | str:
@@ -214,6 +217,19 @@ def edit_item(item_id: int) -> Response | str:
         categories = items.get_all_categories()
 
         return render_template("edit_item.html", item=item, manufacturers=manufacturers, categories=categories)
+
+@app.route("/item/<int:item_id>/like", methods=["POST"])
+def like_item(item_id: int):
+    require_login()
+    check_csrf()
+
+    user_id = session["user_id"]
+    if items.has_liked(item_id, user_id):
+        items.remove_like(item_id, user_id)
+    else:
+        items.add_like(item_id, user_id)
+
+    return redirect(f"/item/{item_id}")
 
 @app.route("/search")
 def search_item() -> str:

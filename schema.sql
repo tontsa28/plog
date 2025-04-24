@@ -43,3 +43,9 @@ CREATE TABLE aircraft_categories (
     aircraft_id INTEGER REFERENCES aircraft,
     manufacturer_id INTEGER REFERENCES categories
 );
+
+CREATE TABLE likes (
+    id INTEGER PRIMARY KEY,
+    aircraft_id INTEGER REFERENCES aircraft,
+    user_id INTEGER REFERENCES users
+);

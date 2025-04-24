@@ -38,4 +38,4 @@ def query_one(sql: str, params: list | None = None) -> dict:
     result = conn.cursor().execute(sql, params).fetchone()
     conn.close()
 
-    return dict(result)
+    return dict(result) if result else dict()

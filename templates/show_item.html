@@ -13,6 +13,12 @@
     <b>Times onboard: </b>{{ item.times_onboard }} <br/>
     <b>Times seen: </b>{{ item.times_seen }} <br/>
 </p>
+{% if session.user_id %}
+<form action="/item/{{ item.id }}/like" method="post">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    <input type="submit" name="like" value="Like | {{ likes.count }}">
+</form>
+{% endif %}
 {% if session.user_id == item.user_id %}
 <p>
     <a href="/item/{{ item.id }}/edit">Edit</a>

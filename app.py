@@ -47,7 +47,6 @@ def check_csrf() -> None:
 def index() -> str:
     all_items = items.get_items()
     all_likes = items.get_all_likes()
-    print(all_likes)
     return render_template("index.html", items=all_items, likes=all_likes)
 
 @app.route("/login", methods=["GET", "POST"])
@@ -219,7 +218,7 @@ def edit_item(item_id: int) -> Response | str:
         return render_template("edit_item.html", item=item, manufacturers=manufacturers, categories=categories)
 
 @app.route("/item/<int:item_id>/like", methods=["POST"])
-def like_item(item_id: int):
+def like_item(item_id: int) -> Response:
     require_login()
     check_csrf()
 
@@ -229,6 +228,8 @@ def like_item(item_id: int):
     else:
         items.add_like(item_id, user_id)
 
+    if request.form["source"] == "index":
+        return redirect("/")
     return redirect(f"/item/{item_id}")
 
 @app.route("/search")

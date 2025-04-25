@@ -16,7 +16,8 @@
 {% if session.user_id %}
 <form action="/item/{{ item.id }}/like" method="post">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-    <input type="submit" name="like" value="Like | {{ likes.count }}">
+    <input type="hidden" name="source" value="show_item">
+    <input type="submit" name="like" value="Like | {{ likes[item.id] }}">
 </form>
 {% endif %}
 {% if session.user_id == item.user_id %}

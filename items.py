@@ -89,6 +89,7 @@ def search_items(query: str) -> list[dict]:
             OR A.registration LIKE ?
             OR A.airline LIKE ?)"""
     like = "%" + query + "%"
+
     return db.query(sql, [like, like, like, like])
 
 def add_like(item_id: int, user_id: int) -> None:
@@ -106,14 +107,16 @@ def has_liked(item_id: int, user_id: int) -> bool:
     return True if result else False
 
 def get_likes(item_id: int) -> dict:
-    sql = "SELECT IFNULL(COUNT(*), 0) AS count FROM likes WHERE aircraft_id = ?"
-    return db.query_one(sql, [item_id])
+    sql = "SELECT COUNT(*) AS count FROM likes WHERE aircraft_id = ?"
+    result = {}
+    result[item_id] = db.query_one(sql, [item_id])["count"]
+    print(result)
+    return result
 
-def get_all_likes():
-    sql = "SELECT aircraft_id, IFNULL(COUNT(*), 0) AS count FROM likes GROUP BY aircraft_id"
-    result = db.query(sql)
+def get_all_likes() -> dict:
+    sql = "SELECT aircraft_id, COUNT(*) AS count FROM likes GROUP BY aircraft_id"
 
-    final = {}
-    for aircraft in result:
-        final[aircraft["aircraft_id"]] = aircraft["count"]
-    return final
+    result = {}
+    for aircraft in db.query(sql):
+        result[aircraft["aircraft_id"]] = aircraft["count"]
+    return result

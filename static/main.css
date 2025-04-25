@@ -1,0 +1,31 @@
+body {
+    margin: auto;
+    max-width: 50em;
+    font-family: 'Noto Sans Mono', monospace;
+    background-color: #283345;
+    color: white;
+}
+
+.item {
+    border: 2px solid orangered;
+    margin: 1em;
+    padding: 0.2em 0.5em;
+}
+
+.info {
+    border: 2px solid black;
+    margin: 1em;
+    padding: 0.5em;
+    background-color: darkred;
+    color: white;
+}
+
+a {
+    color: aquamarine;
+}
+
+@font-face {
+    font-family: 'Noto Sans Mono';
+    src: url('fonts/NotoSansMono.ttf') format('truetype');
+    font-weight: 100 900;
+}

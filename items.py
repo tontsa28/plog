@@ -84,13 +84,10 @@ def search_items(query: str) -> list[dict]:
                     U.username
             FROM aircraft A, users U
             WHERE A.user_id = U.id
-            AND (A.manufacturer LIKE ?
-            OR A.model LIKE ?
-            OR A.registration LIKE ?
-            OR A.airline LIKE ?)"""
+            AND (A.airline || ' ' || A.manufacturer || ' ' || A.model || ' ' || A.registration) LIKE ?"""
     like = "%" + query + "%"
 
-    return db.query(sql, [like, like, like, like])
+    return db.query(sql, [like])
 
 def add_like(item_id: int, user_id: int) -> None:
     sql = "INSERT INTO likes (aircraft_id, user_id) VALUES (?, ?)"

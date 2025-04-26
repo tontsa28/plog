@@ -46,8 +46,9 @@ def check_csrf() -> None:
 @app.route("/")
 def index() -> str:
     all_items = items.get_items()
-    all_likes = items.get_all_likes()
-    return render_template("index.html", items=all_items, likes=all_likes)
+    all_likes = items.get_likes_all()
+    all_liked = items.has_liked_all(session["user_id"])
+    return render_template("index.html", items=all_items, likes=all_likes, liked=all_liked)
 
 @app.route("/login", methods=["GET", "POST"])
 def login() -> Response | str:
@@ -131,8 +132,8 @@ def new_item() -> Response | str:
 
         return redirect("/")
     else:
-        manufacturers = items.get_all_manufacturers()
-        categories = items.get_all_categories()
+        manufacturers = items.get_manufacturers_all()
+        categories = items.get_categories_all()
         return render_template("new_item.html", manufacturers=manufacturers, categories=categories)
 
 @app.route("/item/<int:item_id>")
@@ -141,8 +142,9 @@ def show_item(item_id: int) -> str:
     if not item:
         abort(404)
     likes = items.get_likes(item_id)
+    liked = items.has_liked(item_id, session["user_id"])
 
-    return render_template("show_item.html", item=item, likes=likes)
+    return render_template("show_item.html", item=item, likes=likes, liked=liked)
 
 @app.route("/item/<int:item_id>/remove", methods=["GET", "POST"])
 def remove_item(item_id: int) -> Response | str:
@@ -212,8 +214,8 @@ def edit_item(item_id: int) -> Response | str:
         if item["user_id"] != session["user_id"]:
             abort(403)
 
-        manufacturers = items.get_all_manufacturers()
-        categories = items.get_all_categories()
+        manufacturers = items.get_manufacturers_all()
+        categories = items.get_categories_all()
 
         return render_template("edit_item.html", item=item, manufacturers=manufacturers, categories=categories)
 

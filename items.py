@@ -66,11 +66,11 @@ def update_item(
             WHERE id = ?"""
     db.execute(sql, [manufacturer, model, registration, category, airline, times_onboard, times_seen, item_id])
 
-def get_all_manufacturers() -> list[dict]:
+def get_manufacturers_all() -> list[dict]:
     sql = "SELECT name FROM manufacturers"
     return db.query(sql)
 
-def get_all_categories() -> list[dict]:
+def get_categories_all() -> list[dict]:
     sql = "SELECT name FROM categories"
     return db.query(sql)
 
@@ -103,14 +103,22 @@ def has_liked(item_id: int, user_id: int) -> bool:
 
     return True if result else False
 
-def get_likes(item_id: int) -> dict:
-    sql = "SELECT COUNT(*) AS count FROM likes WHERE aircraft_id = ?"
+def has_liked_all(user_id: int) -> dict:
+    sql = "SELECT aircraft_id FROM likes WHERE user_id = ?"
+
     result = {}
-    result[item_id] = db.query_one(sql, [item_id])["count"]
-    print(result)
+    for aircraft in db.query(sql, [user_id]):
+        result[aircraft["aircraft_id"]] = True
     return result
 
-def get_all_likes() -> dict:
+def get_likes(item_id: int) -> dict:
+    sql = "SELECT COUNT(*) AS count FROM likes WHERE aircraft_id = ?"
+
+    result = {}
+    result[item_id] = db.query_one(sql, [item_id])["count"]
+    return result
+
+def get_likes_all() -> dict:
     sql = "SELECT aircraft_id, COUNT(*) AS count FROM likes GROUP BY aircraft_id"
 
     result = {}

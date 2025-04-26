@@ -2,6 +2,7 @@ body {
     margin: auto;
     max-width: 50em;
     font-family: 'Noto Sans Mono', monospace;
+    font-size: large;
     background-color: #283345;
     color: white;
 }
@@ -28,4 +29,15 @@ a {
     font-family: 'Noto Sans Mono';
     src: url('fonts/NotoSansMono.ttf') format('truetype');
     font-weight: 100 900;
+}
+
+.like-button {
+    background-color: black;
+    color: white;
+    border-color: white;
+    border-radius: 1em;
+    border-width: 0.2em;
+    padding: 0.2em 0.4em;
+    font-family: 'Noto Sans Mono', monospace;
+    font-size: 24px;
 }

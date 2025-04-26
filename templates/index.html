@@ -13,7 +13,17 @@
     <form action="/item/{{ item.id }}/like" method="post">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
         <input type="hidden" name="source" value="index">
-        <input type="submit" name="like" value="Like | {{ likes.get(item.id, 0) }}">
+        {% if liked.get(item.id, False) %}
+        <button type="submit" name="like" class="like-button">
+            <img src="/static/lift_orange.svg" alt="lift_orange" width="24" height="24">
+            {{ likes.get(item.id, 0) }}
+        </button>
+        {% else %}
+        <button type="submit" name="like" class="like-button">
+            <img src="/static/lift_black.svg" alt="lift_orange" width="24" height="24">
+            {{ likes.get(item.id, 0) }}
+        </button>
+        {% endif %}
     </form>
     {% endif %}
 </div>

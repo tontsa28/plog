@@ -1,21 +1,22 @@
 body {
     margin: auto;
-    max-width: 50em;
+    max-width: 90vw;
     font-family: 'Noto Sans Mono', monospace;
-    font-size: large;
+    font-size: clamp(18px, 2.5vw, 20px);
     background-color: #283345;
     color: white;
 }
 
 .item {
-    border: 2px solid orangered;
-    margin: 1em;
-    padding: 0.2em 0.5em;
+    border: 0.2em solid orangered;
+    border-radius: 1em;
+    margin: 1em 0;
+    padding: 0.3em 0.6em;
 }
 
 .info {
-    border: 2px solid black;
-    margin: 1em;
+    border: 0.2em solid black;
+    border-radius: 1em;
     padding: 0.5em;
     background-color: darkred;
     color: white;
@@ -23,6 +24,7 @@ body {
 
 a {
     color: aquamarine;
+    text-decoration: none;
 }
 
 @font-face {
@@ -37,7 +39,24 @@ a {
     border-color: white;
     border-radius: 1em;
     border-width: 0.2em;
-    padding: 0.2em 0.4em;
+    padding: 0.15em 0.3em;
     font-family: 'Noto Sans Mono', monospace;
-    font-size: 24px;
+    font-size: clamp(14px, 2.5vw, 24px);
+}
+
+.navbar {
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 1em;
+}
+
+.navbar a {
+    flex-direction: 1 1 auto;
+    background-color: black;
+    border: 1em solid white;
+    border-color: white;
+    border-radius: 1em;
+    border-width: 0.2em;
+    padding: 0.2em 0.4em;
+    margin: 0.2em;
 }

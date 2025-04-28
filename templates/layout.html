@@ -9,18 +9,18 @@
 
     {% if session.user_id %}
     <p>
-        Logged in as <a href="/user/{{ session.user_id }}">{{ session.username }}</a>
+        Logged in as <a href="/user/{{ session.user_id }}">{{ session.username }}</a>!
     </p>
     {% endif %}
 
-    <p>
-        <a href="/">Front page</a> |
-        <a href="/search">Search aircraft</a> |
+    <p class="navbar">
+        <a href="/">Front page</a>
+        <a href="/search">Search aircraft</a>
     {% if session.user_id %}
-        <a href="/new_item">Add an aircraft</a> |
+        <a href="/new_item">Add an aircraft</a>
         <a href="/logout">Log out</a>
     {% else %}
-        <a href="/login">Log in</a> |
+        <a href="/login">Log in</a>
         <a href="/register">Register</a>
     {% endif %}
     </p>

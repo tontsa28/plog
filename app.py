@@ -47,8 +47,12 @@ def check_csrf() -> None:
 def index() -> str:
     all_items = items.get_items()
     all_likes = items.get_likes_all()
-    all_liked = items.has_liked_all(session["user_id"])
-    return render_template("index.html", items=all_items, likes=all_likes, liked=all_liked)
+
+    try:
+        all_liked = items.has_liked_all(session["user_id"])
+        return render_template("index.html", items=all_items, likes=all_likes, liked=all_liked)
+    except KeyError:
+        return render_template("index.html", items=all_items, likes=all_likes)
 
 @app.route("/login", methods=["GET", "POST"])
 def login() -> Response | str:

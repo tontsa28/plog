@@ -4,7 +4,7 @@ from flask import g
 
 def connect() -> Connection:
     conn = sqlite3.connect("database.db")
-    conn.execute("PRAGMA foreign_keys = ON")
+    conn.cursor().execute("PRAGMA foreign_keys = ON")
     conn.row_factory = sqlite3.Row
 
     return conn
@@ -14,11 +14,29 @@ def execute(sql: str, params: list | None = None) -> None:
     if params is None:
         params = []
 
-    result = conn.execute(sql, params)
+    result = conn.cursor().execute(sql, params)
     conn.commit()
 
     g.last_insert_id = result.lastrowid
     conn.close()
+
+def execute_transaction(sqls: list[str], all_params: list[list] | None = None) -> None:
+    conn = connect()
+    if all_params is None:
+        all_params = [[] for _ in range(len(sqls))]
+    
+    try:
+        conn.cursor().execute("BEGIN")
+
+        for sql, params in zip(sqls, all_params):
+            conn.cursor().execute(sql, params)
+
+        conn.commit()
+        g.last_insert_id = conn.cursor().lastrowid
+    except sqlite3.Error:
+        conn.rollback()
+    finally:
+        conn.close()
 
 def query(sql: str, params: list | None = None) -> list[dict]:
     conn = connect()

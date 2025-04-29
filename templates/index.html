@@ -25,6 +25,14 @@
         </button>
         {% endif %}
     </form>
+    {% else %}
+    <form action="/item/{{ item.id }}/like" method="post">
+        <input type="hidden" name="source" value="index">
+        <button type="submit" name="like" class="like-button">
+            <img src="/static/lift_black.svg" alt="lift_orange" width="24" height="24">
+            {{ likes.get(item.id, 0) }}
+        </button>
+    </form>
     {% endif %}
 </div>
 {% endfor %}

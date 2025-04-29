@@ -80,13 +80,13 @@ def register() -> Response | str:
         password2 = request.form["password2"]
 
         if password1 != password2:
-            flash("ERROR: salasanat eivät täsmää")
+            flash("ERROR: passwords do not match")
             return redirect("/register")
         
         try:
             users.register_user(username, password1)
         except sqlite3.IntegrityError:
-            flash("ERROR: tunnus on jo varattu")
+            flash("ERROR: a user with this name already exists")
             return redirect("/register")
 
         return redirect("/")
@@ -117,7 +117,7 @@ def new_item() -> Response | str:
         if not registration or len(registration) > 10:
             abort(403)
         category = request.form["category"]
-        if not category or len(category) > 20:
+        if not category or len(category) > 25:
             abort(403)
         airline = request.form["airline"]
         if not airline or len(airline) > 30:
@@ -194,7 +194,7 @@ def edit_item(item_id: int) -> Response | str:
         if not registration or len(registration) > 10:
             abort(403)
         category = request.form["category"]
-        if not category or len(category) > 20:
+        if not category or len(category) > 25:
             abort(403)
         airline = request.form["airline"]
         if not airline or len(airline) > 30:
@@ -225,14 +225,16 @@ def edit_item(item_id: int) -> Response | str:
 
 @app.route("/item/<int:item_id>/like", methods=["POST"])
 def like_item(item_id: int) -> Response:
-    require_login()
-    check_csrf()
+    if "user_id" in session:
+        check_csrf()
 
-    user_id = session["user_id"]
-    if items.has_liked(item_id, user_id):
-        items.remove_like(item_id, user_id)
+        user_id = session["user_id"]
+        if items.has_liked(item_id, user_id):
+            items.remove_like(item_id, user_id)
+        else:
+            items.add_like(item_id, user_id)
     else:
-        items.add_like(item_id, user_id)
+        flash("Please log in to lift a post")
 
     if request.form["source"] == "index":
         return redirect("/")

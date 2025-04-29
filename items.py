@@ -15,8 +15,9 @@ def add_item(
     db.execute(sql, [manufacturer, model, registration, category, airline, times_onboard, times_seen, user_id])
 
 def remove_item(item_id: int) -> None:
-    sql = "DELETE FROM aircraft WHERE id = ?"
-    db.execute(sql, [item_id])
+    sql1 = "DELETE FROM likes WHERE aircraft_id = ?"
+    sql2 = "DELETE FROM aircraft WHERE id = ?"
+    db.execute_transaction([sql1, sql2], [[item_id], [item_id]])
 
 def get_items() -> list:
     sql = """SELECT A.id,

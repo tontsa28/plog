@@ -30,6 +30,33 @@
     {% endif %}
 </form>
 {% endif %}
+
+{% if image_exists %}
+<br/>
+<img src="/item/{{ item.id }}/image" alt="Image of the aircraft" class="aircraft-image" />
+<br/>
+<form action="/item/{{ item.id }}/image/remove" method="post">
+    <input type="hidden" name="item_id" value="{{ item.id }}">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    <button type="submit" name="delete-image">
+        Delete image
+    </button>
+</form>
+{% else %}
+<h4>Add an image</h4>
+<form action="/item/{{ item.id }}/image/add" method="post" enctype="multipart/form-data">
+    <p>
+        <label for="image">Image</label>:
+        <input type="file" name="image" id="image" accept=".png" class="file-selector" />
+    </p>
+    <input type="hidden" name="item_id" value="{{ item.id }}">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    <button type="submit" name="upload-image">
+        Upload image
+    </button>
+</form>
+{% endif %}
+
 {% if session.user_id == item.user_id %}
 <p>
     <a href="/item/{{ item.id }}/edit">Edit</a>

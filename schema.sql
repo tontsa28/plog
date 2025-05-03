@@ -18,7 +18,7 @@ CREATE TABLE aircraft (
 
 CREATE TABLE images (
     id INTEGER PRIMARY KEY,
-    aircraft_id INTEGER REFERENCES aircraft,
+    aircraft_id INTEGER REFERENCES UNIQUE aircraft,
     image BLOB
 );
 

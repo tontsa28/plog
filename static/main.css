@@ -74,3 +74,14 @@ input[type="submit"], button {
     background-color: black;
     color: aquamarine;
 }
+
+.aircraft-image {
+    width: 35vw;
+    height: auto;
+    border: 0.2em solid orangered;
+    border-radius: 0.5em;
+}
+
+.file-selector {
+    background-color: white;
+}

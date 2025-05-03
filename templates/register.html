@@ -3,20 +3,20 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
-<h1>Rekisteröidy</h1>
+<h1>Create an account</h1>
 <form action="/register" method="post">
   <p>
-    <label for="username">Tunnus</label>: <br />
+    <label for="username">Username</label>: <br />
     <input type="text" name="username" id="username" />
   </p>
   <p>
-    <label for="password1">Salasana</label>: <br />
+    <label for="password1">Password</label>: <br />
     <input type="password" name="password1" id="password1" />
   </p>
   <p>
-    <label for="password2">Salasana uudestaan</label>: <br />
+    <label for="password2">Retype your password</label>: <br />
     <input type="password" name="password2" id="password2" />
   </p>
-  <input type="submit" value="Luo tunnus" />
+  <input type="submit" value="Create my account" />
 </form>
 {% endblock %}

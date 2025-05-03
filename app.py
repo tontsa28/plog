@@ -2,7 +2,7 @@ import secrets
 import sqlite3
 import importlib
 
-from flask import Flask, flash, redirect, render_template, request, session, abort
+from flask import Flask, flash, redirect, render_template, request, session, abort, make_response
 from werkzeug.wrappers.response import Response
 
 import users
@@ -146,9 +146,13 @@ def show_item(item_id: int) -> str:
     if not item:
         abort(404)
     likes = items.get_likes(item_id)
-    liked = items.has_liked(item_id, session["user_id"])
+    has_image = items.has_image(item_id)
 
-    return render_template("show_item.html", item=item, likes=likes, liked=liked)
+    try:
+        liked = items.has_liked(item_id, session["user_id"])
+        return render_template("show_item.html", item=item, likes=likes, liked=liked, image_exists=has_image)
+    except KeyError:
+        return render_template("show_item.html", item=item, likes=likes, image_exists=has_image)
 
 @app.route("/item/<int:item_id>/remove", methods=["GET", "POST"])
 def remove_item(item_id: int) -> Response | str:
@@ -162,6 +166,7 @@ def remove_item(item_id: int) -> Response | str:
 
     if request.method == "POST":
         check_csrf()
+
         if "remove" in request.form:
             items.remove_item(item_id)
             return redirect("/")
@@ -251,9 +256,59 @@ def search_item() -> str:
     return render_template("search_item.html", query=query, results=results)
 
 @app.route("/user/<int:user_id>")
-def show_user(user_id) -> str:
+def show_user(user_id: int) -> str:
     user = users.get_user(user_id)
     if not user:
         abort(404)
     user_items = users.get_items(user_id)
     return render_template("show_user.html", user=user, items=user_items)
+
+@app.route("/item/<int:item_id>/image/add", methods=["POST"])
+def add_image(item_id: int) -> Response:
+    require_login()
+    check_csrf()
+
+    item_id = int(request.form["item_id"])
+    item = items.get_item(item_id)
+    if not item:
+        abort(404)
+    if item["user_id"] != session["user_id"]:
+        abort(403)
+
+    file = request.files["image"]
+    if file.filename and not file.filename.endswith(".png"):
+        flash("ERROR: invalid file format, must be png")
+        return redirect(f"/item/{item_id}")
+
+    image = file.read()
+    if len(image) > 1_048_576:
+        flash("ERROR: maximum file size exceeded")
+        return redirect(f"/item/{item_id}")
+
+    items.add_image(item_id, image)
+    return redirect(f"/item/{item_id}")
+
+@app.route("/item/<int:item_id>/image/remove", methods=["POST"])
+def remove_image(item_id: int) -> Response:
+    require_login()
+    check_csrf()
+
+    item_id = int(request.form["item_id"])
+    item = items.get_item(item_id)
+    if not item:
+        abort(404)
+    if item["user_id"] != session["user_id"]:
+        abort(403)
+    
+    items.remove_image(item_id)
+    return redirect(f"/item/{item_id}")
+
+@app.route("/item/<int:item_id>/image")
+def show_image(item_id: int) -> Response:
+    image = items.get_image(item_id)
+    if not image:
+        abort(404)
+
+    response = make_response(bytes(image))
+    response.headers.set("Content-Type", "image/png")
+    return response

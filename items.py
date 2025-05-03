@@ -126,3 +126,21 @@ def get_likes_all() -> dict:
     for aircraft in db.query(sql):
         result[aircraft["aircraft_id"]] = aircraft["count"]
     return result
+
+def add_image(item_id: int, image: bytes) -> None:
+    sql = "INSERT INTO images (aircraft_id, image) VALUES (?, ?)"
+    db.execute(sql, [item_id, image])
+
+def remove_image(item_id: int) -> None:
+    sql = "DELETE FROM images WHERE aircraft_id = ?"
+    db.execute(sql, [item_id])
+
+def get_image(item_id: int) -> bytes | None:
+    sql = "SELECT image FROM images WHERE aircraft_id = ?"
+    result = db.query_one(sql, [item_id])
+    return result["image"] if result else None
+
+def has_image(item_id: int) -> bool:
+    sql = "SELECT image FROM images WHERE aircraft_id = ?"
+    result = db.query_one(sql, [item_id])
+    return True if result else False

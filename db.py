@@ -1,6 +1,6 @@
 import sqlite3
 from sqlite3 import Connection
-from flask import g
+from flask import g, flash
 
 def connect() -> Connection:
     conn = sqlite3.connect("database.db")
@@ -35,6 +35,7 @@ def execute_transaction(sqls: list[str], all_params: list[list] | None = None) -
         g.last_insert_id = conn.cursor().lastrowid
     except sqlite3.Error:
         conn.rollback()
+        flash("ERROR: database transaction execution failed, no changes were made")
     finally:
         conn.close()
 

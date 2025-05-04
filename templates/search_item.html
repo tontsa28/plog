@@ -5,14 +5,14 @@
 {% block content %}
 <h2>Search aircraft</h2>
 <p>
-    You can search for aircraft by airline, manufacturer, model and registration, in this specific order.
-    All parameters are not required, as long as they are in the right order.
+    You can search for aircraft by airline, manufacturer, model, registration, location or airport (ICAO).
+    If multiple parameters are used, they must be in the forementioned order and no parameters can be in between the first and last.
     The search is case insensitive.
 </p>
 
 <form action="/search" method="get">
     <p>
-        <label for="query">Keyword:</label>
+        <label for="query">Keyword(s)</label>:
         <input type="text" name="query" id="query" value="{{ query }}">
     </p>
     <button type="submit" name="search" class="action-button">

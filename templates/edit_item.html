@@ -3,11 +3,11 @@
 {% block title %}Edit aircraft{% endblock %}
 
 {% block content %}
-<h2>{{ item.airline}} {{ item.manufacturer }} {{ item.model }} [{{ item.registration }}]</h2>
+<h2>{{ item.airline }} {{ item.manufacturer }} {{ item.model }} [{{ item.registration }}]</h2>
 <h3>Edit aircraft</h3>
 <form action="/item/{{ item.id }}/edit" method="post">
     <p>
-        <label for="manufacturer">Manufacturer:</label> <br/>
+        <label for="manufacturer">Manufacturer</label>: <br/>
         <select name="manufacturer" id="manufacturer" required>
             <option value="{{ item.manufacturer }}" selected>{{ item.manufacturer }}</option>
         {% for manufacturer in manufacturers %}
@@ -18,15 +18,15 @@
         </select>
     </p>
     <p>
-        <label for="model">Model:</label> <br/>
+        <label for="model">Model</label>: <br/>
         <input type="text" name="model" id="model" value="{{ item.model }}" maxlength="20" required />
     </p>
     <p>
-        <label for="registration">Registration:</label> <br/>
+        <label for="registration">Registration</label>: <br/>
         <input type="text" name="registration" id="registration" value="{{ item.registration }}" maxlength="10" required />
     </p>
     <p>
-        <label for="category">Category:</label> <br/>
+        <label for="category">Category</label>: <br/>
         <select name="category" id="category" required>
             <option value="{{ item.category }}" selected>{{ item.category }}</option>
         {% for category in categories %}
@@ -37,16 +37,16 @@
         </select>
     </p>
     <p>
-        <label for="airline">Airline:</label> <br/>
+        <label for="airline">Airline</label>: <br/>
         <input type="text" name="airline" id="airline" value="{{ item.airline }}" maxlength="30" required />
     </p>
     <p>
-        <label for="times_onboard">Times onboard:</label> <br/>
-        <input type="number" name="times_onboard" id="times_onboard" value="{{ item.times_onboard }}" min="0" max="999" />
+        <label for="location">Location</label>: <br/>
+        <input type="text" name="location" id="location" value="{{ item.location }}" maxlength="40" />
     </p>
     <p>
-        <label for="times_seen">Times seen:</label> <br/>
-        <input type="number" name="times_seen" id="times_seen" value="{{ item.times_seen }}" min="0" max="999" />
+        <label for="airport">Airport (ICAO)</label>: <br/>
+        <input type="text" name="airport" id="airport" value="{{ item.airport }}" minlength="4" maxlength="4" />
     </p>
     <input type="hidden" name="item_id" value="{{ item.id }}" />
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
@@ -63,7 +63,7 @@
 <form action="/item/{{ item.id }}/image/remove" method="post">
     <input type="hidden" name="item_id" value="{{ item.id }}">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-    <button type="submit" name="delete-image" class="action-button">
+    <button type="submit" name="remove-image" class="action-button">
         Delete image
     </button>
 </form>

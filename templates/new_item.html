@@ -6,7 +6,7 @@
 <h2>New aircraft</h2>
 <form action="/new_item" method="post">
     <p>
-        <label for="manufacturer">Manufacturer:</label> <br/>
+        <label for="manufacturer">Manufacturer</label>: <br/>
         <select name="manufacturer" id="manufacturer" required>
             <option value="" disabled selected>(Choose)</option>
         {% for manufacturer in manufacturers %}
@@ -15,15 +15,15 @@
         </select>
     </p>
     <p>
-        <label for="model">Model:</label> <br/>
+        <label for="model">Model</label>: <br/>
         <input type="text" name="model" id="model" maxlength="20" required />
     </p>
     <p>
-        <label for="registration">Registration:</label> <br/>
+        <label for="registration">Registration</label>: <br/>
         <input type="text" name="registration" id="registration" maxlength="10" required />
     </p>
     <p>
-        <label for="category">Category:</label> <br/>
+        <label for="category">Category</label>: <br/>
         <select name="category" id="category" required>
             <option value="" disabled selected>(Choose)</option>
         {% for category in categories %}
@@ -32,16 +32,16 @@
         </select>
     </p>
     <p>
-        <label for="airline">Airline:</label> <br/>
+        <label for="airline">Airline</label>: <br/>
         <input type="text" name="airline" id="airline" maxlength="30" required />
     </p>
     <p>
-        <label for="times_onboard">Times onboard:</label> <br/>
-        <input type="number" name="times_onboard" id="times_onboard" min="0" max="999" />
+        <label for="location">Location</label>: <br/>
+        <input type="text" name="location" id="location" maxlength="40" />
     </p>
     <p>
-        <label for="times_seen">Times seen:</label> <br/>
-        <input type="number" name="times_seen" id="times_seen" min="0" max="999" />
+        <label for="airport">Airport (ICAO)</label>: <br/>
+        <input type="text" name="airport" id="airport" minlength="4" maxlength="4" />
     </p>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <button type="submit" name="add-aircraft" class="action-button">

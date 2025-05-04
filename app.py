@@ -123,17 +123,11 @@ def new_item() -> Response | str:
         airline = request.form["airline"]
         if not airline or len(airline) > 30:
             abort(403)
-        try:
-            times_onboard = int(request.form["times_onboard"])
-        except ValueError:
-            times_onboard = 0
-        try:
-            times_seen = int(request.form["times_seen"])
-        except ValueError:
-            times_seen = 0
+        location = request.form["location"]
+        airport = request.form["airport"]
         user_id = session["user_id"]
 
-        items.add_item(user_id, manufacturer, model, registration, category, airline, times_onboard, times_seen)
+        items.add_item(user_id, manufacturer, model, registration, category, airline, location, airport)
 
         return redirect("/")
     else:
@@ -168,7 +162,7 @@ def remove_item(item_id: int) -> Response | str:
     if request.method == "POST":
         check_csrf()
 
-        if "remove" in request.form:
+        if "remove-aircraft" in request.form:
             items.remove_item(item_id)
             return redirect("/")
         else:
@@ -205,16 +199,10 @@ def edit_item(item_id: int) -> Response | str:
         airline = request.form["airline"]
         if not airline or len(airline) > 30:
             abort(403)
-        try:
-            times_onboard = int(request.form["times_onboard"])
-        except ValueError:
-            times_onboard = 0
-        try:
-            times_seen = int(request.form["times_seen"])
-        except ValueError:
-            times_seen = 0
+        location = request.form["location"]
+        airport = request.form["airport"]
 
-        items.update_item(item_id, manufacturer, model, registration, category, airline, times_onboard, times_seen)
+        items.update_item(item_id, manufacturer, model, registration, category, airline, location, airport)
 
         return redirect(f"/item/{item_id}")
     else:
@@ -312,7 +300,7 @@ def remove_image(item_id: int) -> Response:
         abort(404)
     if item["user_id"] != session["user_id"]:
         abort(403)
-    
+
     items.remove_image(item_id)
     return redirect(f"/item/{item_id}/edit")
 

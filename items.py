@@ -7,17 +7,18 @@ def add_item(
     registration: str,
     category: str,
     airline: str,
-    times_onboard: int = 0,
-    times_seen: int = 0
+    location: str,
+    airport: str
 ) -> None:
-    sql = """INSERT INTO aircraft (manufacturer, model, registration, category, airline, times_onboard, times_seen, user_id)
+    sql = """INSERT INTO aircraft (manufacturer, model, registration, category, airline, location, airport, user_id)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)"""
-    db.execute(sql, [manufacturer, model, registration, category, airline, times_onboard, times_seen, user_id])
+    db.execute(sql, [manufacturer, model, registration, category, airline, location, airport, user_id])
 
 def remove_item(item_id: int) -> None:
     sql1 = "DELETE FROM likes WHERE aircraft_id = ?"
     sql2 = "DELETE FROM aircraft WHERE id = ?"
-    db.execute_transaction([sql1, sql2], [[item_id], [item_id]])
+    sql3 = "DELETE FROM images WHERE aircraft_id = ?"
+    db.execute_transaction([sql1, sql2, sql3], [[item_id], [item_id], [item_id]])
 
 def get_items() -> list:
     sql = """SELECT A.id,
@@ -38,8 +39,8 @@ def get_item(item_id: int) -> dict:
                     A.registration,
                     A.category,
                     A.airline,
-                    A.times_onboard,
-                    A.times_seen,
+                    A.location,
+                    A.airport,
                     A.user_id,
                     U.username
             FROM aircraft A, users U
@@ -53,8 +54,8 @@ def update_item(
     registration: str,
     category: str,
     airline: str,
-    times_onboard: int,
-    times_seen: int
+    location: str,
+    airport: str
 ) -> None:
     sql = """UPDATE aircraft
             SET manufacturer = ?,
@@ -62,10 +63,10 @@ def update_item(
                 registration = ?,
                 category = ?,
                 airline = ?,
-                times_onboard = ?,
-                times_seen = ?
+                location = ?,
+                airport = ?
             WHERE id = ?"""
-    db.execute(sql, [manufacturer, model, registration, category, airline, times_onboard, times_seen, item_id])
+    db.execute(sql, [manufacturer, model, registration, category, airline, location, airport, item_id])
 
 def get_manufacturers_all() -> list[dict]:
     sql = "SELECT name FROM manufacturers"
@@ -82,10 +83,12 @@ def search_items(query: str) -> list[dict]:
                     A.registration,
                     A.airline,
                     A.user_id,
+                    A.location,
+                    A.airport,
                     U.username
             FROM aircraft A, users U
             WHERE A.user_id = U.id
-            AND (A.airline || ' ' || A.manufacturer || ' ' || A.model || ' ' || A.registration) LIKE ?"""
+            AND (A.airline || ' ' || A.manufacturer || ' ' || A.model || ' ' || A.registration  || ' ' || A.location || ' ' || A.airport) LIKE ?"""
     like = "%" + query + "%"
 
     return db.query(sql, [like])
@@ -99,7 +102,11 @@ def remove_like(item_id: int, user_id: int) -> None:
     db.execute(sql, [item_id, user_id])
 
 def has_liked(item_id: int, user_id: int) -> bool:
-    sql = "SELECT aircraft_id, user_id FROM likes WHERE aircraft_id = ? AND user_id = ?"
+    sql = """SELECT aircraft_id,
+                    user_id
+            FROM likes
+            WHERE aircraft_id = ?
+            AND user_id = ?"""
     result = db.query_one(sql, [item_id, user_id])
 
     return True if result else False
@@ -120,7 +127,10 @@ def get_likes(item_id: int) -> dict:
     return result
 
 def get_likes_all() -> dict:
-    sql = "SELECT aircraft_id, COUNT(*) AS count FROM likes GROUP BY aircraft_id"
+    sql = """SELECT aircraft_id,
+                    COUNT(*) AS count
+            FROM likes
+            GROUP BY aircraft_id"""
 
     result = {}
     for aircraft in db.query(sql):

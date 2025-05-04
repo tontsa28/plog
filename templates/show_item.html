@@ -10,8 +10,8 @@
     <b>Registration: </b>{{ item.registration }} <br/>
     <b>Category: </b>{{ item.category }} <br/>
     <b>Airline: </b>{{ item.airline }} <br/>
-    <b>Times onboard: </b>{{ item.times_onboard }} <br/>
-    <b>Times seen: </b>{{ item.times_seen }} <br/>
+    <b>Location: </b>{{ item.location }} <br/>
+    <b>Airport (ICAO): </b>{{ item.airport }} <br/>
 </p>
 {% if session.user_id %}
 <form action="/item/{{ item.id }}/like" method="post">

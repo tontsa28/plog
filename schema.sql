@@ -11,14 +11,14 @@ CREATE TABLE aircraft (
     registration TEXT,
     category TEXT,
     airline TEXT,
-    times_onboard INTEGER,
-    times_seen INTEGER,
-    user_id INTEGER REFERENCES users
+    location TEXT,
+    airport TEXT,
+    user_id INTEGER REFERENCES users(id)
 );
 
 CREATE TABLE images (
     id INTEGER PRIMARY KEY,
-    aircraft_id INTEGER REFERENCES UNIQUE aircraft,
+    aircraft_id INTEGER REFERENCES aircraft(id) UNIQUE,
     image BLOB
 );
 
@@ -27,25 +27,13 @@ CREATE TABLE manufacturers (
     name TEXT
 );
 
-CREATE TABLE aircraft_manufacturers (
-    id INTEGER PRIMARY KEY,
-    aircraft_id INTEGER REFERENCES aircraft,
-    manufacturer_id INTEGER REFERENCES manufacturers
-);
-
 CREATE TABLE categories (
     id INTEGER PRIMARY KEY,
     name TEXT
 );
 
-CREATE TABLE aircraft_categories (
-    id INTEGER PRIMARY KEY,
-    aircraft_id INTEGER REFERENCES aircraft,
-    manufacturer_id INTEGER REFERENCES categories
-);
-
 CREATE TABLE likes (
     id INTEGER PRIMARY KEY,
-    aircraft_id INTEGER REFERENCES aircraft,
-    user_id INTEGER REFERENCES users
+    aircraft_id INTEGER REFERENCES aircraft(id),
+    user_id INTEGER REFERENCES users(id)
 );

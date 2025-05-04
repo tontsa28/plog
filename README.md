@@ -1,5 +1,5 @@
 # plog
-**plog** (**pl**ane l**og**) is a tracking tool for aviation enthusiasts. It can be used to track things like spotted aircraft, flown aircraft or aircraft that one has been onboard.
+**plog** (**pl**ane l**og**) is a plane spotting platform for aviation enthusiasts. It can be used for posting spotted aircraft (with images), searching for aircraft, lifting other users' posts and so on.
 
 ## App features
 
@@ -39,13 +39,9 @@ Install the flask library:
 $ pip3 install flask
 ```
 
-Create the database tables:
+Create the database tables and insert predefined data into them:
 ```
 $ sqlite3 database.db < schema.sql
-```
-
-Insert predefined data into the database:
-```
 $ sqlite3 database.db < init.sql
 ```
 

@@ -5,20 +5,20 @@
 {% block content %}
 <h2>Create an account</h2>
 <form action="/register" method="post">
-  <p>
-    <label for="username">Username</label>: <br />
-    <input type="text" name="username" id="username" />
-  </p>
-  <p>
-    <label for="password1">Password</label>: <br />
-    <input type="password" name="password1" id="password1" />
-  </p>
-  <p>
-    <label for="password2">Retype your password</label>: <br />
-    <input type="password" name="password2" id="password2" />
-  </p>
-  <button type="submit" name="register" class="action-button">
-    Create an account
-  </button>
+    <p>
+        <label for="username">Username</label>: <br />
+        <input type="text" name="username" id="username" />
+    </p>
+    <p>
+        <label for="password1">Password</label>: <br />
+        <input type="password" name="password1" id="password1" />
+    </p>
+    <p>
+        <label for="password2">Retype your password</label>: <br />
+        <input type="password" name="password2" id="password2" />
+    </p>
+    <button type="submit" name="register" class="action-button">
+        Create an account
+    </button>
 </form>
 {% endblock %}

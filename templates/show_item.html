@@ -17,7 +17,7 @@
 <form action="/item/{{ item.id }}/like" method="post">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="hidden" name="source" value="show_item">
-    {% if liked.get(item.id, False) %}
+    {% if liked %}
     <button type="submit" name="like" class="like-button">
         <img src="/static/lift_orange.svg" alt="lift_orange" width="24" height="24">
         {{ likes.get(item.id, 0) }}
@@ -43,34 +43,6 @@
 <br/>
 <img src="/item/{{ item.id }}/image" alt="Image of the aircraft" class="aircraft-image" />
 <br/>
-
-{% if session.user_id %}
-<form action="/item/{{ item.id }}/image/remove" method="post">
-    <input type="hidden" name="item_id" value="{{ item.id }}">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-    <button type="submit" name="delete-image">
-        Delete image
-    </button>
-</form>
-{% endif %}
-
-{% else %}
-
-{% if session.user_id %}
-<h4>Add an image</h4>
-<form action="/item/{{ item.id }}/image/add" method="post" enctype="multipart/form-data">
-    <p>
-        <label for="image">Image</label>:
-        <input type="file" name="image" id="image" accept=".png" class="file-selector" />
-    </p>
-    <input type="hidden" name="item_id" value="{{ item.id }}">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-    <button type="submit" name="upload-image">
-        Upload image
-    </button>
-</form>
-{% endif %}
-
 {% endif %}
 
 {% if session.user_id == item.user_id %}

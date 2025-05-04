@@ -3,11 +3,13 @@
 {% block title %}User {{ user.username }}{% endblock %}
 
 {% block content %}
+
 {% if session.user_id == user.id %}
 <h2>Your profile</h2>
 {% else %}
 <h2>Profile of {{ user.username }}</h2>
 {% endif %}
+
 <p>
 {% if session.user_id == user.id %}
     You have a total of <b>{{ items | count }}</b> submitted aircraft.
@@ -15,6 +17,7 @@
     {{ user.username }} has a total of <b>{{ items | count }}</b> submitted aircraft.
 {% endif %}
 </p>
+
 <h3>Aircraft</h3>
 
 {% for item in items %}

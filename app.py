@@ -226,8 +226,9 @@ def edit_item(item_id: int) -> Response | str:
 
         manufacturers = items.get_manufacturers_all()
         categories = items.get_categories_all()
+        has_image = items.has_image(item_id)
 
-        return render_template("edit_item.html", item=item, manufacturers=manufacturers, categories=categories)
+        return render_template("edit_item.html", item=item, manufacturers=manufacturers, categories=categories, image_exists=has_image)
 
 @app.route("/item/<int:item_id>/like", methods=["POST"])
 def like_item(item_id: int) -> Response:
@@ -290,15 +291,15 @@ def add_image(item_id: int) -> Response:
     file = request.files["image"]
     if file.filename and not file.filename.endswith(".png"):
         flash("ERROR: invalid file format, must be png")
-        return redirect(f"/item/{item_id}")
+        return redirect(f"/item/{item_id}/edit")
 
     image = file.read()
     if len(image) > 1_048_576:
         flash("ERROR: maximum file size exceeded")
-        return redirect(f"/item/{item_id}")
+        return redirect(f"/item/{item_id}/edit")
 
     items.add_image(item_id, image)
-    return redirect(f"/item/{item_id}")
+    return redirect(f"/item/{item_id}/edit")
 
 @app.route("/item/<int:item_id>/image/remove", methods=["POST"])
 def remove_image(item_id: int) -> Response:
@@ -313,7 +314,7 @@ def remove_image(item_id: int) -> Response:
         abort(403)
     
     items.remove_image(item_id)
-    return redirect(f"/item/{item_id}")
+    return redirect(f"/item/{item_id}/edit")
 
 @app.route("/item/<int:item_id>/image")
 def show_image(item_id: int) -> Response:

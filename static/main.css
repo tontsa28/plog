@@ -7,10 +7,15 @@ body {
     color: white;
 }
 
+h2, h3 {
+    text-decoration: underline;
+}
+
 .item {
     display: flex;
     align-items: stretch;
     justify-content: space-between;
+    background-color: black;
     border: 0.2em solid orangered;
     border-radius: 1em;
     margin: 1em 0;
@@ -99,9 +104,14 @@ input, textarea, select {
     font-size: clamp(14px, 2vw, 18px);
 }
 
-input[type="submit"], button {
+.action-button {
     background-color: black;
     color: aquamarine;
+    border: 0.2em solid white;
+    border-radius: 1em;
+    padding: 0.2em 0.4em;
+    font-family: 'Noto Sans Mono', monospace;
+    font-size: clamp(14px, 2vw, 18px);
 }
 
 .aircraft-image {
@@ -115,10 +125,6 @@ input[type="submit"], button {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-
-.file-selector {
-    background-color: white;
 }
 
 .aircraft-details b {

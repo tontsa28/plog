@@ -50,8 +50,43 @@
     </p>
     <input type="hidden" name="item_id" value="{{ item.id }}" />
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-    <input type="submit" value="Edit aircraft" />
+    <button type="submit" name="edit-aircraft" class="action-button">
+        Edit aircraft
+    </button>
 </form>
+
+<h3>Edit image</h3>
+{% if image_exists %}
+<img src="/item/{{ item.id }}/image" alt="Image of the aircraft" class="aircraft-image" />
+
+{% if session.user_id == item.user_id %}
+<form action="/item/{{ item.id }}/image/remove" method="post">
+    <input type="hidden" name="item_id" value="{{ item.id }}">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    <button type="submit" name="delete-image" class="action-button">
+        Delete image
+    </button>
+</form>
+{% endif %}
+
+{% else %}
+
+{% if session.user_id == item.user_id %}
+<form action="/item/{{ item.id }}/image/add" method="post" enctype="multipart/form-data">
+    <p>
+        <label for="image">Image</label>:
+        <input type="file" name="image" id="image" accept=".png" class="file-selector" />
+    </p>
+    <input type="hidden" name="item_id" value="{{ item.id }}">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    <button type="submit" name="upload-image" class="action-button">
+        Upload image
+    </button>
+</form>
+{% endif %}
+
+{% endif %}
+
 <p>
     <a href="/item/{{ item.id }}">Cancel</a>
 </p>

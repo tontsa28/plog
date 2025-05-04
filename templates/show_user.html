@@ -16,9 +16,48 @@
 {% endif %}
 </p>
 <h3>Aircraft</h3>
-<ul>
-    {% for item in items %}
-    <li><a href="/item/{{ item.id }}">{{ item.airline}} {{ item.manufacturer }} {{ item.model }} [{{ item.registration }}]</a></li>
-    {% endfor %}
-</ul>
+
+{% for item in items %}
+<div class="item">
+    <div class="item-content">
+        <div class="item-content-top">
+            <a href="/item/{{ item.id }}">{{ item.airline }} {{ item.manufacturer }} {{ item.model }} [{{ item.registration }}]</a> <br/>
+            <br/>
+        </div>
+        <div class="item-content-bottom">
+            {% if session.user_id %}
+            <form action="/item/{{ item.id }}/like" method="post">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+                <input type="hidden" name="source" value="show_user/{{ user.id }}">
+                {% if liked.get(item.id, False) %}
+                <button type="submit" name="like" class="like-button">
+                    <img src="/static/lift_orange.svg" alt="lift_orange" width="24" height="24">
+                    {{ likes.get(item.id, 0) }}
+                </button>
+                {% else %}
+                <button type="submit" name="like" class="like-button">
+                    <img src="/static/lift_black.svg" alt="lift_orange" width="24" height="24">
+                    {{ likes.get(item.id, 0) }}
+                </button>
+                {% endif %}
+            </form>
+            {% else %}
+            <form action="/item/{{ item.id }}/like" method="post">
+                <input type="hidden" name="source" value="show_user/{{ user.id }}">
+                <button type="submit" name="like" class="like-button">
+                    <img src="/static/lift_black.svg" alt="lift_orange" width="24" height="24">
+                    {{ likes.get(item.id, 0) }}
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    {% if images_exist.get(item.id, False) %}
+    <div class="item-image">
+        <img src="/item/{{ item.id }}/image" alt="Image of the aircraft" class="aircraft-image-preview" />
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+
 {% endblock %}

@@ -47,12 +47,13 @@ def check_csrf() -> None:
 def index() -> str:
     all_items = items.get_items()
     all_likes = items.get_likes_all()
+    has_images = items.has_images()
 
     try:
         all_liked = items.has_liked_all(session["user_id"])
-        return render_template("index.html", items=all_items, likes=all_likes, liked=all_liked)
+        return render_template("index.html", items=all_items, likes=all_likes, liked=all_liked, images_exist=has_images)
     except KeyError:
-        return render_template("index.html", items=all_items, likes=all_likes)
+        return render_template("index.html", items=all_items, likes=all_likes, images_exist=has_images)
 
 @app.route("/login", methods=["GET", "POST"])
 def login() -> Response | str:
@@ -243,6 +244,9 @@ def like_item(item_id: int) -> Response:
 
     if request.form["source"] == "index":
         return redirect("/")
+    elif request.form["source"].startswith("show_user"):
+        user_id = int(request.form["source"].split("/")[-1])
+        return redirect(f"/user/{user_id}")
     return redirect(f"/item/{item_id}")
 
 @app.route("/search")
@@ -260,8 +264,16 @@ def show_user(user_id: int) -> str:
     user = users.get_user(user_id)
     if not user:
         abort(404)
+
     user_items = users.get_items(user_id)
-    return render_template("show_user.html", user=user, items=user_items)
+    user_likes = users.get_likes_all(user_id)
+    user_has_images = users.has_images(user_id)
+
+    try:
+        user_liked = items.has_liked_all(user_id)
+        return render_template("show_user.html", user=user, items=user_items, likes=user_likes, liked=user_liked, images_exist=user_has_images)
+    except KeyError:
+        return render_template("show_user.html", user=user, items=user_items, likes=user_likes, images_exist=user_has_images)
 
 @app.route("/item/<int:item_id>/image/add", methods=["POST"])
 def add_image(item_id: int) -> Response:

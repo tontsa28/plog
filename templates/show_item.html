@@ -4,7 +4,7 @@
 
 {% block content %}
 <h2>{{ item.airline}} {{ item.manufacturer }} {{ item.model }} [{{ item.registration }}]</h2>
-<p>
+<p class="aircraft-details">
     <b>Manufacturer: </b>{{ item.manufacturer }} <br/>
     <b>Model: </b>{{ item.model }} <br/>
     <b>Registration: </b>{{ item.registration }} <br/>
@@ -17,7 +17,7 @@
 <form action="/item/{{ item.id }}/like" method="post">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="hidden" name="source" value="show_item">
-    {% if liked %}
+    {% if liked.get(item.id, False) %}
     <button type="submit" name="like" class="like-button">
         <img src="/static/lift_orange.svg" alt="lift_orange" width="24" height="24">
         {{ likes.get(item.id, 0) }}
@@ -29,12 +29,22 @@
     </button>
     {% endif %}
 </form>
+{% else %}
+<form action="/item/{{ item.id }}/like" method="post">
+    <input type="hidden" name="source" value="show_item">
+    <button type="submit" name="like" class="like-button">
+        <img src="/static/lift_black.svg" alt="lift_orange" width="24" height="24">
+        {{ likes.get(item.id, 0) }}
+    </button>
+</form>
 {% endif %}
 
 {% if image_exists %}
 <br/>
 <img src="/item/{{ item.id }}/image" alt="Image of the aircraft" class="aircraft-image" />
 <br/>
+
+{% if session.user_id %}
 <form action="/item/{{ item.id }}/image/remove" method="post">
     <input type="hidden" name="item_id" value="{{ item.id }}">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
@@ -42,7 +52,11 @@
         Delete image
     </button>
 </form>
+{% endif %}
+
 {% else %}
+
+{% if session.user_id %}
 <h4>Add an image</h4>
 <form action="/item/{{ item.id }}/image/add" method="post" enctype="multipart/form-data">
     <p>
@@ -55,6 +69,8 @@
         Upload image
     </button>
 </form>
+{% endif %}
+
 {% endif %}
 
 {% if session.user_id == item.user_id %}

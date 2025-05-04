@@ -144,3 +144,11 @@ def has_image(item_id: int) -> bool:
     sql = "SELECT image FROM images WHERE aircraft_id = ?"
     result = db.query_one(sql, [item_id])
     return True if result else False
+
+def has_images() -> dict:
+    sql = "SELECT aircraft_id FROM images"
+
+    result = {}
+    for aircraft in db.query(sql):
+        result[aircraft["aircraft_id"]] = True
+    return result
